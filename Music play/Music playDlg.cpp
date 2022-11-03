@@ -272,6 +272,8 @@ void SetJd(char* fileName)
 					g_stop = FALSE;
 					g_this->miscres(3);
 					g_Thread = 0;
+					Write_config("0", "歌曲播放进度");
+					Write_config("0", "进度条进度");
 					break;
 				}
 				Sleep(1);
@@ -287,6 +289,8 @@ void SetJd(char* fileName)
 			g_stop = FALSE;
 			g_lock = FALSE;
 			g_Thread = 0;
+			Write_config("0", "歌曲播放进度");
+			Write_config("0", "进度条进度");
 			if (g_Close)
 			{
 				g_Close = FALSE;
