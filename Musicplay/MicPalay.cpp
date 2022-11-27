@@ -8,7 +8,7 @@
 #include <tlhelp32.h>
 
 #include "resource.h"
-// Í·ÎÄ¼ş
+// å¤´æ–‡ä»¶
 #include <chrono>
 
 
@@ -19,14 +19,14 @@
 MicPalay* mp3this = 0;
 int micza = 0;
 
-extern   BOOL MP3Btn;           //MP3Êó±ê×ó¼ü°´ÏÂ
-extern   BOOL MP3BtnUP;			//MP3Êó±ê×ó¼ü°´ÏÂ
-extern   int Mp3Pos(int dx, int pos);//ÉèÖÃ½ø¶ÈÌõ½ø¶È
-extern void mp3paly(int dx);          //ÉèÖÃ²¥·Å°´Å¥ÑùÊ½
-extern void SetListColor1(int dx,int ret=TRUE);//ÉèÖÃ²¥·Å¹â±ê
-extern void Rwlist1();            //ÖØÖÃ²¥·ÅÁĞ±í
-extern BOOL   Paint ;          //ÊÇ·ñÔÚ»­Í¼
-extern CDC* g_dc ;             //»­Í¼¶ÔÏó
+extern   BOOL MP3Btn;           //MP3é¼ æ ‡å·¦é”®æŒ‰ä¸‹
+extern   BOOL MP3BtnUP;			//MP3é¼ æ ‡å·¦é”®æŒ‰ä¸‹
+extern   int Mp3Pos(int dx, int pos);//è®¾ç½®è¿›åº¦æ¡è¿›åº¦
+extern void mp3paly(int dx);          //è®¾ç½®æ’­æ”¾æŒ‰é’®æ ·å¼
+extern void SetListColor1(int dx,int ret=TRUE);//è®¾ç½®æ’­æ”¾å…‰æ ‡
+extern void Rwlist1();            //é‡ç½®æ’­æ”¾åˆ—è¡¨
+extern BOOL   Paint ;          //æ˜¯å¦åœ¨ç”»å›¾
+extern CDC* g_dc ;             //ç”»å›¾å¯¹è±¡
 
 char* g_fileName = 0;
 
@@ -45,14 +45,14 @@ MicPalay::MicPalay()
 	str.ReleaseBuffer();
 	m_list_Str = GetList();
     m_listMax=SplitString(m_list_Str,"|", m_list);
-	str=Read_config("µ±Ç°ÏµºÅ");
+	str=Read_config("å½“å‰ç³»å·");
 	m_listdx = StrToInt(str);
-	str = Read_config("¸èÇúÄ£Ê½");
+	str = Read_config("æ­Œæ›²æ¨¡å¼");
 	m_model= StrToInt(str);
-	BASS_Init(-1, 44100, 0, 0, NULL);//bass³õÊ¼»¯
-	//Write_config(m_list_Str, "²¥·ÅÁĞ±í");
-		//Write_config(str, "µ±Ç°ÏµºÅ");
-	//Write_config(str, "¸èÇúÄ£Ê½");
+	BASS_Init(-1, 44100, 0, 0, NULL);//bassåˆå§‹åŒ–
+	//Write_config(m_list_Str, "æ’­æ”¾åˆ—è¡¨");
+		//Write_config(str, "å½“å‰ç³»å·");
+	//Write_config(str, "æ­Œæ›²æ¨¡å¼");
 }
 
 MicPalay::~MicPalay()
@@ -73,7 +73,7 @@ void MicPalay::SetList()
 
 	{
 		//str.ReleaseBuffer();
-		//myFile.WriteString("µÚ1ĞĞ\n");
+		//myFile.WriteString("ç¬¬1è¡Œ\n");
 
 
 		//CString strOrder;
@@ -174,18 +174,18 @@ void MicPalay::CreatFileTxt()
 	CFileException fileException;
 	if (myFile.Open(pszFileName, CFile::typeText | CFile::modeCreate | CFile::modeReadWrite | CFile::modeNoTruncate), &fileException)
 	{
-		//CString strOrder;			//Èç¹ûÎÄ¼ş´æÔÚÔò´ò¿ª£¬·ñÔò´´½¨
+		//CString strOrder;			//å¦‚æœæ–‡ä»¶å­˜åœ¨åˆ™æ‰“å¼€ï¼Œå¦åˆ™åˆ›å»º
 		//strOrder.Format("%d,%.3f\t", 66, 88.88);
 		///myFile.WriteString(strOrder);
 		myFile.Close();
 	}
 	else
 	{
-		TRACE("Can't open file %s,error=%u\n", pszFileName, fileException.m_cause);	//Òì³£´¦Àí
+		TRACE("Can't open file %s,error=%u\n", pszFileName, fileException.m_cause);	//å¼‚å¸¸å¤„ç†
 	}
-	//Ô­ÎÄÁ´½Ó£ºhttps ://blog.csdn.net/u012987386/article/details/71088296/
+	//åŸæ–‡é“¾æ¥ï¼šhttps ://blog.csdn.net/u012987386/article/details/71088296/
 }
-//Ñ°ÕÒÎÄ¼şÀ©Õ¹Ãû
+//å¯»æ‰¾æ–‡ä»¶æ‰©å±•å
 BOOL MicPalay::myGetExtension(IN PVOID strbuff)
 {
 	PUCHAR p = (PUCHAR)strbuff;
@@ -274,7 +274,7 @@ int MicPalay::SplitString(LPCTSTR lpszStr, LPCTSTR lpszSplit, CStringArray& rArr
 
 int MicPalay::__rand()
 {
-	//srand(time(0)); //²¥ÈöËæ»úÖÖ×Ó
+	//srand(time(0)); //æ’­æ’’éšæœºç§å­
 	int a=0, b=0;
 	
 	if (m_Next)
@@ -412,7 +412,7 @@ CString MicPalay::Getdxliststr(int dx)
 	str.ReleaseBuffer();
 	if (Min == -1)
 	{
-		strcpy(ch, "Î´Öª¸èÇú");
+		strcpy(ch, "æœªçŸ¥æ­Œæ›²");
 	}
 	else
 	{
@@ -441,7 +441,7 @@ void MicPalay::DeleteList(int dx)
 		}
 		m_list_Str += "|"+str;
 	}
-	//Write_config(m_list_Str, "²¥·ÅÁĞ±í");
+	//Write_config(m_list_Str, "æ’­æ”¾åˆ—è¡¨");
 	SetList();
 	m_listMax = 0;
 	m_list.RemoveAll();
@@ -470,7 +470,7 @@ BOOL MicPalay::AddList(CString str)
 	else
 	{
 		m_list_Str += "|" + str;
-		//Write_config(m_list_Str, "²¥·ÅÁĞ±í");
+		//Write_config(m_list_Str, "æ’­æ”¾åˆ—è¡¨");
 	}
 	m_listMax = SplitString(m_list_Str, "|", m_list);
 	SetList();
@@ -484,7 +484,7 @@ void MicPalay::SetHwnd(HWND hwnd)
 	m_hwnd = hwnd;
 	m_image.Setmyimage(hwnd);
 }
-//ÎÄ¼şÊÇ·ñ´æÔÚ
+//æ–‡ä»¶æ˜¯å¦å­˜åœ¨
 int MicPalay::file_exist(char* str)
 {
 
@@ -499,12 +499,12 @@ void MicPalay::Releaseplug()
 {
 	//CString str = "";
 	//str = INIPATH(3) + "lame.exe";
-	//if (!file_exist(str.GetBuffer()))  // ÊÇ·ñÓĞÖØÃûÎÄ¼ş¼Ğ
+	//if (!file_exist(str.GetBuffer()))  // æ˜¯å¦æœ‰é‡åæ–‡ä»¶å¤¹
 	//{
 	//	str.ReleaseBuffer();
 	//	FreeMyResource(IDR_EXE, "plug", str.GetBuffer());
 	//	str.ReleaseBuffer();
-	//	if (file_exist(str.GetBuffer()))  // ÊÇ·ñÓĞÖØÃûÎÄ¼ş¼Ğ
+	//	if (file_exist(str.GetBuffer()))  // æ˜¯å¦æœ‰é‡åæ–‡ä»¶å¤¹
 	//	{
 	//		m_exe = TRUE;
 	//	}
@@ -516,12 +516,12 @@ void MicPalay::Releaseplug()
 	//str.ReleaseBuffer();
 	//str = "";
 	//str = INIPATH(4) + "lame_enc.dll";
-	//if (!file_exist(str.GetBuffer()))  // ÊÇ·ñÓĞÖØÃûÎÄ¼ş¼Ğ
+	//if (!file_exist(str.GetBuffer()))  // æ˜¯å¦æœ‰é‡åæ–‡ä»¶å¤¹
 	//{
 	//	str.ReleaseBuffer();
 	//	FreeMyResource(IDR_DLL, "plug", str.GetBuffer());
 	//	str.ReleaseBuffer();
-	//	if (file_exist(str.GetBuffer()))  // ÊÇ·ñÓĞÖØÃûÎÄ¼ş¼Ğ
+	//	if (file_exist(str.GetBuffer()))  // æ˜¯å¦æœ‰é‡åæ–‡ä»¶å¤¹
 	//	{
 	//		m_dll = TRUE;
 	//	}
@@ -533,7 +533,7 @@ void MicPalay::Releaseplug()
 
 }
 
-// ½ø³ÌÊÇ·ñ´æÔÚ ·µ»Ø1
+// è¿›ç¨‹æ˜¯å¦å­˜åœ¨ è¿”å›1
 int MicPalay::process_exist(char* pid)
 {
 	int ret = 0;
@@ -547,7 +547,7 @@ int MicPalay::process_exist(char* pid)
 	return ret;
 }
 
-//MP3×ªÂë
+//MP3è½¬ç 
 BOOL MicPalay::ParseMP3(const char* mp3Path)
 {
 	if (!(m_exe == TRUE && m_dll == TRUE))
@@ -587,7 +587,7 @@ BOOL MicPalay::ParseMP3(const char* mp3Path)
 			return 0;
 		}
 		PROCESSENTRY32 pt;
-		pt.dwSize = sizeof(PROCESSENTRY32); //µÚÒ»´ÎÊ¹ÓÃ±ØĞë³õÊ¼»¯³ÉÔ±
+		pt.dwSize = sizeof(PROCESSENTRY32); //ç¬¬ä¸€æ¬¡ä½¿ç”¨å¿…é¡»åˆå§‹åŒ–æˆå‘˜
 		BOOL bRet = Process32First(hSnapshot, &pt);
 		while (bRet)
 		{
@@ -769,7 +769,7 @@ void MicPalay::paly_1()
 {
 	if (micza == 0)
 	{
-		MessageBox(0, "·Ç·¨µ÷ÓÃ£¡", "MP3ÓÑÇéÌáÊ¾", MB_OKCANCEL);
+		MessageBox(0, "éæ³•è°ƒç”¨ï¼", "MP3å‹æƒ…æç¤º", MB_OKCANCEL);
 		return;
 	}
 	micza = 0;
@@ -780,7 +780,7 @@ void MicPalay::paly_1()
 	{
 		m_int++;
 
-		//ÓĞÍâ²¿²ÎÊı´«Èë
+		//æœ‰å¤–éƒ¨å‚æ•°ä¼ å…¥
 		if (m_addres <= BOTTONPARSTR && m_addres >= STARTPARSTR)
 		{
 			m_addres = -1;
@@ -828,7 +828,7 @@ void MicPalay::paly_1()
 			Sleep(200);
 			continue;
 		}
-		if (m_Last)//ÉÏÒ»Çú
+		if (m_Last)//ä¸Šä¸€æ›²
 		{
 			if (m_paly)
 			{
@@ -845,7 +845,7 @@ void MicPalay::paly_1()
 			
 			
 		}
-		//ÏÂÒ»Çú
+		//ä¸‹ä¸€æ›²
 		if (m_Next) 
 		{
 			if (m_paly)
@@ -862,7 +862,7 @@ void MicPalay::paly_1()
 			}
 			
 		}
-		//³ö´íÁË
+		//å‡ºé”™äº†
 		if (m_listMax<=0)
 		{
 			mp3paly(1);
@@ -875,7 +875,7 @@ void MicPalay::paly_1()
 		{
 		case 0:
 		{
-			//Ë³Ğò²¥·Å
+			//é¡ºåºæ’­æ”¾
 			if (m_Next && aa0 == 0)
 			{
 				aa0 = 1;
@@ -924,13 +924,13 @@ void MicPalay::paly_1()
 			aa0 = 0;
 			break;
 		}
-		case 1://Ëæ»ú²¥·Å
+		case 1://éšæœºæ’­æ”¾
 		{
-			//Ë³Ğò²¥·Å
+			//é¡ºåºæ’­æ”¾
 			dex= __rand();
 			break;
 		}
-		case 2://µ¥ÇúÑ­»·²¥·Å
+		case 2://å•æ›²å¾ªç¯æ’­æ”¾
 		{
 			
 			if (m_Next && aa0 == 0)
@@ -964,7 +964,7 @@ void MicPalay::paly_1()
 			aa0 = 0;
 			break;
 		}
-		case 3://µ¥Çú²¥·Å
+		case 3://å•æ›²æ’­æ”¾
 		{
 			if (m_Next && aa0 == 0)
 			{
@@ -1190,23 +1190,23 @@ void MicPalay::SetMp3Eroo(char* str, int dx)
 {
 	CDC dcMem;
 
-	CBitmap bmp;  //ÄÚ´æÖĞ³ĞÔØÁÙÊ±Í¼ÏóµÄÎ»Í¼
+	CBitmap bmp;  //å†…å­˜ä¸­æ‰¿è½½ä¸´æ—¶å›¾è±¡çš„ä½å›¾
 	CRect rc;
 	GetClientRect(m_hwnd, &rc);
 
-	dcMem.CreateCompatibleDC(g_dc);  //ÒÀ¸½´°¿ÚDC´´½¨¼æÈİÄÚ´æDC
-	//´´½¨¼æÈİÎ»Í¼(±ØĞëÓÃpDC´´½¨£¬·ñÔò»­³öµÄÍ¼ĞÎ±ä³ÉºÚÉ«)
+	dcMem.CreateCompatibleDC(g_dc);  //ä¾é™„çª—å£DCåˆ›å»ºå…¼å®¹å†…å­˜DC
+	//åˆ›å»ºå…¼å®¹ä½å›¾(å¿…é¡»ç”¨pDCåˆ›å»ºï¼Œå¦åˆ™ç”»å‡ºçš„å›¾å½¢å˜æˆé»‘è‰²)
 	bmp.CreateCompatibleBitmap(g_dc, rc.Width(), rc.Height());
 	CBitmap* pOldBit = dcMem.SelectObject(&bmp);
-	//°´Ô­À´±³¾°Ìî³ä¿Í»§Çø£¬²»È»»áÊÇºÚÉ«
+	//æŒ‰åŸæ¥èƒŒæ™¯å¡«å……å®¢æˆ·åŒºï¼Œä¸ç„¶ä¼šæ˜¯é»‘è‰²
 	dcMem.FillSolidRect(rc, RGB(0xF0, 0xF0, 0xF0));
 	if (dx==0)
 	{
 		g_dc->StretchBlt(408, 544,400,20,&dcMem, 408, 544, 400, 20,SRCCOPY);
-		//½«ÄÚ´æDCÉÏµÄÍ¼Ïó¿½±´µ½Ç°Ì¨
-//»æÍ¼Íê³ÉºóµÄÇåÀí
-		dcMem.DeleteDC();      //É¾³ıDC
-		bmp.DeleteObject();  //É¾³ıÎ»Í¼
+		//å°†å†…å­˜DCä¸Šçš„å›¾è±¡æ‹·è´åˆ°å‰å°
+//ç»˜å›¾å®Œæˆåçš„æ¸…ç†
+		dcMem.DeleteDC();      //åˆ é™¤DC
+		bmp.DeleteObject();  //åˆ é™¤ä½å›¾
 		//g_dc->DeleteDC();
 		return;
 	}
@@ -1217,8 +1217,8 @@ void MicPalay::SetMp3Eroo(char* str, int dx)
 	//g_dc->DeleteDC();
 	dcMem.SetTextColor(tco);
 	dcMem.SetBkMode(a);
-	dcMem.DeleteDC();      //É¾³ıDC
-	bmp.DeleteObject();  //É¾³ıÎ»Í¼
+	dcMem.DeleteDC();      //åˆ é™¤DC
+	bmp.DeleteObject();  //åˆ é™¤ä½å›¾
 	dcMem.DeleteDC();
 	return;
 }
@@ -1253,21 +1253,21 @@ void MicPalay::SetModel(int ret)
 			SetModelColor();
 			CString str;
 			str.Format("%d", m_model);
-			Write_config(str, "¸èÇúÄ£Ê½");
+			Write_config(str, "æ­Œæ›²æ¨¡å¼");
 			return;
 		}
 		m_model += 1;
 		SetModelColor();
 		CString str;
 		str.Format("%d", m_model);
-		Write_config(str, "¸èÇúÄ£Ê½");
+		Write_config(str, "æ­Œæ›²æ¨¡å¼");
 		return;
 	}
 	m_model = ret;
 	SetModelColor();
 	CString str;
 	str.Format("%d", m_model);
-	Write_config(str, "¸èÇúÄ£Ê½");
+	Write_config(str, "æ­Œæ›²æ¨¡å¼");
 	return;
 }
 
@@ -1281,15 +1281,15 @@ void MicPalay::Stretchmodel(int x,int y )
 {
 	CDC dcMem;
 
-	CBitmap bmp;  //ÄÚ´æÖĞ³ĞÔØÁÙÊ±Í¼ÏóµÄÎ»Í¼
+	CBitmap bmp;  //å†…å­˜ä¸­æ‰¿è½½ä¸´æ—¶å›¾è±¡çš„ä½å›¾
 	CRect rc;
 	GetClientRect(m_hwnd, &rc);
 
-	dcMem.CreateCompatibleDC(g_dc);  //ÒÀ¸½´°¿ÚDC´´½¨¼æÈİÄÚ´æDC
-	//´´½¨¼æÈİÎ»Í¼(±ØĞëÓÃpDC´´½¨£¬·ñÔò»­³öµÄÍ¼ĞÎ±ä³ÉºÚÉ«)
+	dcMem.CreateCompatibleDC(g_dc);  //ä¾é™„çª—å£DCåˆ›å»ºå…¼å®¹å†…å­˜DC
+	//åˆ›å»ºå…¼å®¹ä½å›¾(å¿…é¡»ç”¨pDCåˆ›å»ºï¼Œå¦åˆ™ç”»å‡ºçš„å›¾å½¢å˜æˆé»‘è‰²)
 	bmp.CreateCompatibleBitmap(g_dc, rc.Width(), rc.Height());
 	CBitmap* pOldBit = dcMem.SelectObject(&bmp);
-	//°´Ô­À´±³¾°Ìî³ä¿Í»§Çø£¬²»È»»áÊÇºÚÉ«
+	//æŒ‰åŸæ¥èƒŒæ™¯å¡«å……å®¢æˆ·åŒºï¼Œä¸ç„¶ä¼šæ˜¯é»‘è‰²
 	dcMem.FillSolidRect(rc, RGB(0xF0, 0xF0, 0xF0));
 	int crColor = 0;
 	COLORREF obCo = 0;
@@ -1317,14 +1317,14 @@ void MicPalay::Stretchmodel(int x,int y )
 		pt[4] = { x + 28,y+1 };	//    845,624
 		mymode(&dcMem, pt+2, 3);
 		dcMem.Arc(x - 7, y - 8,  x + 25, y + 15,  x+17, y-6,  x+23 , y );
-		//Ë³Ğò²¥·Å 857,623  35c1ff =815 623
+		//é¡ºåºæ’­æ”¾ 857,623  35c1ff =815 623
 		 obCo = dcMem.SetTextColor(RGB(0x35, 0xc1, 0xff));
 		dcMem.SetBkMode(0);
-		dcMem.TextOut(x + 42, y + 1, "Ë³Ğò²¥·Å", strlen("Ë³Ğò²¥·Å"));
+		dcMem.TextOut(x + 42, y + 1, "é¡ºåºæ’­æ”¾", strlen("é¡ºåºæ’­æ”¾"));
 		dcMem.SetTextColor(obCo);
 		break;
 	}
-	case  1:   //Ëæ»ú²¥·Å 857,623  35c1ff
+	case  1:   //éšæœºæ’­æ”¾ 857,623  35c1ff
 	{
 		pt[0] = { x ,y};          // 815 623== 833,610
 		pt[1] = { x + 6,y };           // 830,620
@@ -1341,10 +1341,10 @@ void MicPalay::Stretchmodel(int x,int y )
 		pt[11] =       { x + 18,y-3 };	//    845,624
 		mymode(&dcMem, pt + 6, 6);
 
-		//Ëæ»ú²¥·Å 857,623  35c1ff =815 623
+		//éšæœºæ’­æ”¾ 857,623  35c1ff =815 623
 		 obCo = dcMem.SetTextColor(RGB(0x35,0xc1,0xff));
 		dcMem.SetBkMode(0);
-		dcMem.TextOut(x + 42, y +1, "Ëæ»ú²¥·Å", strlen("Ëæ»ú²¥·Å"));
+		dcMem.TextOut(x + 42, y +1, "éšæœºæ’­æ”¾", strlen("éšæœºæ’­æ”¾"));
 		dcMem.SetTextColor(obCo);
 		break;
 	}
@@ -1364,10 +1364,10 @@ void MicPalay::Stretchmodel(int x,int y )
 		dcMem.SetTextColor(obCo);
 
 		dcMem.Arc(x - 7, y - 8, x + 25, y + 15, x + 17, y - 6, x + 23, y);
-		//µ¥ÇúÑ­»· 857,623  35c1ff =815 623
+		//å•æ›²å¾ªç¯ 857,623  35c1ff =815 623
 		 obCo = dcMem.SetTextColor(RGB(0x35, 0xc1, 0xff));
 		dcMem.SetBkMode(0);
-		dcMem.TextOut(x + 42, y + 1, "µ¥ÇúÑ­»·", strlen("µ¥ÇúÑ­»·"));
+		dcMem.TextOut(x + 42, y + 1, "å•æ›²å¾ªç¯", strlen("å•æ›²å¾ªç¯"));
 		dcMem.SetTextColor(obCo);
 		break;
 	}
@@ -1377,10 +1377,10 @@ void MicPalay::Stretchmodel(int x,int y )
 		pt[1] = { x + 20,y+8 };           // 830,62
 		pt[2] = { x + 17,y + 5 };
 		mymode(&dcMem, pt , 3);
-		//µ¥Çú²¥·Å 857,623  35c1ff =815 623
+		//å•æ›²æ’­æ”¾ 857,623  35c1ff =815 623
 		 obCo = dcMem.SetTextColor(RGB(0x35, 0xc1, 0xff));
 		dcMem.SetBkMode(0);
-		dcMem.TextOut(x + 42, y + 1, "µ¥Çú²¥·Å", strlen("µ¥Çú²¥·Å"));
+		dcMem.TextOut(x + 42, y + 1, "å•æ›²æ’­æ”¾", strlen("å•æ›²æ’­æ”¾"));
 		dcMem.SetTextColor(obCo);
 		break;
 	}
@@ -1390,8 +1390,8 @@ void MicPalay::Stretchmodel(int x,int y )
 	g_dc->StretchBlt(x-8, y-10, 150, 40, &dcMem, x - 8, y - 10, 150, 40, SRCCOPY);
 
 	dcMem.SelectObject(obpen);
-	dcMem.DeleteDC();      //É¾³ıDC
-	bmp.DeleteObject();  //É¾³ıÎ»Í¼
+	dcMem.DeleteDC();      //åˆ é™¤DC
+	bmp.DeleteObject();  //åˆ é™¤ä½å›¾
 	dcMem.DeleteDC();
 }
 void MicPalay::StretchBlt()
@@ -1429,8 +1429,13 @@ BOOL MicPalay::main(char* fileName)
 	}
 
 	 m_stream = BASS_StreamCreateFile(FALSE, m_mp3Path, 0, 0, BASS_SAMPLE_LOOP);
-	
-	CString str=Read_config("¸èÇúÂ·¾¶");
+	 BASS_ChannelFlags(m_stream, 0, BASS_SAMPLE_LOOP);//è®¾ç½®æ˜¯å¦é‡å¤æ’­æ”¾
+	 /*   if chkLoop.Checked then
+	BASS_ChannelFlags(hs, BASS_SAMPLE_LOOP, BASS_SAMPLE_LOOP)
+   else
+	BASS_ChannelFlags(hs, 0, BASS_SAMPLE_LOOP);
+	*/
+	CString str=Read_config("æ­Œæ›²è·¯å¾„");
 	if (str== m_mp3Path)
 	{
 		m_text0 = TRUE;
@@ -1442,13 +1447,13 @@ BOOL MicPalay::main(char* fileName)
 	QWORD pos = BASS_ChannelGetLength(m_stream, BASS_POS_BYTE);
 	if (m_text0)
 	{
-		CString sstr = Read_config("¸èÇú²¥·Å½ø¶È");
+		CString sstr = Read_config("æ­Œæ›²æ’­æ”¾è¿›åº¦");
 		if (sstr != "")
 		{
 			QWORD pos1 = StrToInt(sstr);
 			if (pos1 >= 100 && pos1 <= pos)
 			{
-				/* ÉèÖÃ²¥·Å½ø¶È */
+				/* è®¾ç½®æ’­æ”¾è¿›åº¦ */
 				BASS_ChannelSetPosition(m_stream, pos1, BASS_POS_BYTE);
 			}	
 		}
@@ -1460,9 +1465,9 @@ BOOL MicPalay::main(char* fileName)
 
 	pos = pos / 100;
 
-	Write_config("", "¸èÇúÂ·¾¶");
-	Write_config("", "¸èÇú²¥·Å½ø¶È");
-	Write_config("", "½ø¶ÈÌõ½ø¶È");
+	Write_config("", "æ­Œæ›²è·¯å¾„");
+	Write_config("", "æ­Œæ›²æ’­æ”¾è¿›åº¦");
+	Write_config("", "è¿›åº¦æ¡è¿›åº¦");
 
 	if (pos == 0)
 	{
@@ -1473,8 +1478,8 @@ BOOL MicPalay::main(char* fileName)
 
 	m_lock = TRUE;
 	int a1 = 0;
-	int a2 = 0;//¼ÇÂ¼ÉÏ´Î»¬¿éÎ»ÖÃ
-	Write_config(m_mp3Path, "¸èÇúÂ·¾¶");
+	int a2 = 0;//è®°å½•ä¸Šæ¬¡æ»‘å—ä½ç½®
+	Write_config(m_mp3Path, "æ­Œæ›²è·¯å¾„");
 
 	if ( BASS_ChannelPlay(m_stream, FALSE))
 	{
@@ -1489,7 +1494,7 @@ BOOL MicPalay::main(char* fileName)
 	m_image.GetMp3ParSing(m_mp3Path, g_dc, 15, 580, 85);
 	
 	str.Format("%d", m_listdx);
-	Write_config(str, "µ±Ç°ÏµºÅ");
+	Write_config(str, "å½“å‰ç³»å·");
 	mp3paly(2);
 	Mp3Pos(0, 0);
 	m_lock = TRUE;
@@ -1506,7 +1511,7 @@ BOOL MicPalay::main(char* fileName)
 		if (tlen2 >= pos / 2) { tlen = tlen1 + 1; }
 		else { tlen = tlen1; }
 		if (tlen > 100) { tlen = 100; }
-		if (tlen > a1 || tlen < a1)
+		if (tlen > a1 )
 		{
 			Mp3Pos(0, tlen);
 		}
@@ -1523,7 +1528,7 @@ BOOL MicPalay::main(char* fileName)
 				if (tlen > a1 || tlen < a1)
 				{
 					Mp3Pos(0, tlen);
-					BASS_ChannelPause(m_stream);//ÒôÀÖÔİÍ£
+					BASS_ChannelPause(m_stream);//éŸ³ä¹æš‚åœ
 					
 					BASS_ChannelSetPosition(m_stream, tlen*pos, BASS_POS_BYTE);
 					
@@ -1538,15 +1543,15 @@ BOOL MicPalay::main(char* fileName)
 		
 		int rett = BASS_ChannelIsActive(m_stream);
 	
-		if (rett == BASS_ACTIVE_STOPPED || tlen >= 99)
+		if (rett == BASS_ACTIVE_STOPPED)
 		{
 			m_lock = FALSE;
 			m_paly = 0;
 			BASS_ChannelStop(m_stream);
-			mp3paly(1);	//AfxMessageBox("²¥·ÅÍê±Ï");
+			mp3paly(1);	//AfxMessageBox("æ’­æ”¾å®Œæ¯•");
 			Mp3Pos(0, 0);	return TRUE;
-			Write_config("0", "¸èÇú²¥·Å½ø¶È");
-			Write_config("0", "½ø¶ÈÌõ½ø¶È");
+			Write_config("0", "æ­Œæ›²æ’­æ”¾è¿›åº¦");
+			Write_config("0", "è¿›åº¦æ¡è¿›åº¦");
 			m_Previous = m_listdx;
 			SetListColor1(m_listdx, FALSE);
 			BASS_StreamFree(m_stream);
@@ -1566,27 +1571,23 @@ BOOL MicPalay::main(char* fileName)
 			while (m_mini || Paint)
 			{
 				m_paly = 3;
-				if (m_pause)//ÔİÍ£
+				if (m_pause)//æš‚åœ
 				{
 					//m_pause = FALSE;
 					//m_resume = FALSE;
 					BASS_ChannelPause(m_stream);
 					break;
 				}
-				tlen = BASS_ChannelGetPosition(m_stream, BASS_POS_BYTE);
-				tlen1 = tlen / pos;
-				tlen2 = tlen % pos;
-				if (tlen2 >= pos / 2) { tlen = tlen1 + 1; }
-				else { tlen = tlen1; }
-				if (tlen>=99)
+				 rett = BASS_ChannelIsActive(m_stream);
+				if (rett == BASS_ACTIVE_STOPPED)
 				{
 					BASS_ChannelStop(m_stream);
 					m_lock = FALSE;
 					m_paly = 0;
 					mp3paly(1);
 					Mp3Pos(0, 0);
-					Write_config("0", "¸èÇú²¥·Å½ø¶È");
-					Write_config("0", "½ø¶ÈÌõ½ø¶È");
+					Write_config("0", "æ­Œæ›²æ’­æ”¾è¿›åº¦");
+					Write_config("0", "è¿›åº¦æ¡è¿›åº¦");
 					m_Previous = m_listdx;
 					SetListColor1(m_listdx, FALSE);
 					BASS_StreamFree(m_stream);
@@ -1612,9 +1613,9 @@ BOOL MicPalay::main(char* fileName)
 					a2 = tlen;
 					CString str;
 					str.Format("%d", tlen * pos);
-					Write_config(str, "¸èÇú²¥·Å½ø¶È");
+					Write_config(str, "æ­Œæ›²æ’­æ”¾è¿›åº¦");
 					str.Format("%d", tlen);
-					Write_config(str, "½ø¶ÈÌõ½ø¶È");
+					Write_config(str, "è¿›åº¦æ¡è¿›åº¦");
 					m_Previous = m_listdx;
 					SetListColor1(m_listdx, FALSE);
 					BASS_StreamFree(m_stream);
@@ -1634,14 +1635,14 @@ BOOL MicPalay::main(char* fileName)
 					a2 = tlen;
 					CString str;
 					str.Format("%d", tlen * pos);
-					Write_config(str, "¸èÇú²¥·Å½ø¶È");
+					Write_config(str, "æ­Œæ›²æ’­æ”¾è¿›åº¦");
 					str.Format("%d", tlen);
-					Write_config(str, "½ø¶ÈÌõ½ø¶È");
+					Write_config(str, "è¿›åº¦æ¡è¿›åº¦");
 					DeleteFile(INIPATH(2).GetBuffer());
 					m_Previous = m_listdx;
 					m_paly = 0;
 					BASS_StreamFree(m_stream);
-					::PostMessage(m_hwnd, WM_QUIT, 0, 0);//¹Ø±Õ³ÌĞò
+					::PostMessage(m_hwnd, WM_QUIT, 0, 0);//å…³é—­ç¨‹åº
 					break;
 				}
 				Sleep(1);
@@ -1650,11 +1651,11 @@ BOOL MicPalay::main(char* fileName)
 
 		}
 
-		if (m_pause)//ÔİÍ£
+		if (m_pause)//æš‚åœ
 		{
 			m_paly = 2;
-			BASS_ChannelPause(m_stream);//ÔİÍ£
-			while (m_pause)//ÔİÍ£
+			BASS_ChannelPause(m_stream);//æš‚åœ
+			while (m_pause)//æš‚åœ
 			{
 				if (m_mini&&!m_pause)
 				{
@@ -1679,9 +1680,9 @@ BOOL MicPalay::main(char* fileName)
 					a2 = tlen;
 					CString str;
 					str.Format("%d", tlen * pos);
-					Write_config(str, "¸èÇú²¥·Å½ø¶È");
+					Write_config(str, "æ­Œæ›²æ’­æ”¾è¿›åº¦");
 					str.Format("%d", tlen);
-					Write_config(str, "½ø¶ÈÌõ½ø¶È");
+					Write_config(str, "è¿›åº¦æ¡è¿›åº¦");
 					m_Previous = m_listdx;
 					SetListColor1(m_listdx, FALSE);
 					BASS_StreamFree(m_stream);
@@ -1700,14 +1701,14 @@ BOOL MicPalay::main(char* fileName)
 					a2 = tlen;
 					CString str;
 					str.Format("%d", tlen* pos);
-					Write_config(str, "¸èÇú²¥·Å½ø¶È");
+					Write_config(str, "æ­Œæ›²æ’­æ”¾è¿›åº¦");
 					str.Format("%d", tlen);
-					Write_config(str, "½ø¶ÈÌõ½ø¶È");
+					Write_config(str, "è¿›åº¦æ¡è¿›åº¦");
 					DeleteFile(INIPATH(2).GetBuffer());
 					m_Previous = m_listdx;
 					m_paly = 0;
 					BASS_StreamFree(m_stream);
-					::PostMessage(m_hwnd, WM_QUIT, 0, 0);//¹Ø±Õ³ÌĞò;
+					::PostMessage(m_hwnd, WM_QUIT, 0, 0);//å…³é—­ç¨‹åº;
 					break;
 				}
 				Sleep(1);
@@ -1727,9 +1728,9 @@ BOOL MicPalay::main(char* fileName)
 			a2 = tlen;
 			CString str;
 			str.Format("%d", tlen * pos);
-			Write_config(str, "¸èÇú²¥·Å½ø¶È");
+			Write_config(str, "æ­Œæ›²æ’­æ”¾è¿›åº¦");
 			str.Format("%d", tlen);
-			Write_config(str, "½ø¶ÈÌõ½ø¶È");
+			Write_config(str, "è¿›åº¦æ¡è¿›åº¦");
 			m_Previous = m_listdx;
 			SetListColor1(m_listdx, FALSE);
 			BASS_StreamFree(m_stream);
@@ -1748,25 +1749,25 @@ BOOL MicPalay::main(char* fileName)
 			a2 = tlen;
 			CString str;
 			str.Format("%d", tlen * pos);
-			Write_config(str, "¸èÇú²¥·Å½ø¶È");
+			Write_config(str, "æ­Œæ›²æ’­æ”¾è¿›åº¦");
 			str.Format("%d", tlen);
-			Write_config(str, "½ø¶ÈÌõ½ø¶È");
+			Write_config(str, "è¿›åº¦æ¡è¿›åº¦");
 			DeleteFile(INIPATH(2).GetBuffer());
 			m_Previous = m_listdx;
 			m_paly = 0;
 			BASS_StreamFree(m_stream);
-			::PostMessage(m_hwnd, WM_QUIT, 0, 0);//¹Ø±Õ³ÌĞò
+			::PostMessage(m_hwnd, WM_QUIT, 0, 0);//å…³é—­ç¨‹åº
 			break;
 		}
-		//±£´æ¸èÇú½ø¶È
+		//ä¿å­˜æ­Œæ›²è¿›åº¦
 		if (tlen > a2 || tlen < a2)
 		{
 			a2 = tlen;
 			CString str;
 			str.Format("%d", tlen * pos);
-			Write_config(str, "¸èÇú²¥·Å½ø¶È");
+			Write_config(str, "æ­Œæ›²æ’­æ”¾è¿›åº¦");
 			str.Format("%d", tlen);
-			Write_config(str, "½ø¶ÈÌõ½ø¶È");
+			Write_config(str, "è¿›åº¦æ¡è¿›åº¦");
 		}
 		m_paly = 1;
 		Sleep(50);
