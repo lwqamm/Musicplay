@@ -1657,7 +1657,7 @@ BOOL MicPalay::main(char* fileName)
 			BASS_ChannelPause(m_stream);//暂停
 			while (m_pause)//暂停
 			{
-				if (m_mini&&!m_pause)
+				if (m_mini)
 				{
 					break;
 				}
